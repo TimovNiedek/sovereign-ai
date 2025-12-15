@@ -21,3 +21,18 @@ services:
       --enable-auto-tool-choice
       --tensor-parallel-size 1
       --max-model-len 30720
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"   # the default port used by Prometheus
+    volumes:
+      - ${PWD}/prometheus.yaml:/etc/prometheus/prometheus.yml # mount Prometheus config file
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000" # the default port used by Grafana
