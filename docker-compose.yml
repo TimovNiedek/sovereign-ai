@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  vllm:
+    image: vllm/vllm-openai:nightly
+    runtime: nvidia
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    ports:
+      - "8000:8000"
+    ipc: host
+    command: >
+      mistralai/Devstral-Small-2-24B-Instruct-2512
+      --served-model-name devstral
+      --api-key token-abc123
+      --gpu-memory-utilization 0.9
+      --tool-call-parser mistral
+      --enable-auto-tool-choice
+      --tensor-parallel-size 1
+      --max-model-len 30720
