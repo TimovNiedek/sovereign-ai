@@ -2,6 +2,10 @@
 
 This document outlines the setup for a self-hosted LLM using vLLM with Prometheus and Grafana monitoring.
 
+## Prerequisites
+
+* Set the environment variable HF_TOKEN, or add it to a .env file.
+
 ## Running with docker compose
 
 ```bash
