@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   vllm:
-    image: vllm/vllm-openai:nightly
+    image: vllm/vllm-openai:latest
     runtime: nvidia
     environment:
       - HF_TOKEN=${HF_TOKEN}
@@ -13,22 +11,21 @@ services:
       - "8000:8000"
     ipc: host
     command: >
-      mistralai/Devstral-Small-2-24B-Instruct-2512
-      --served-model-name devstral
+      --model stelterlab/Qwen3-Coder-30B-A3B-Instruct-AWQ
+      --served-model-name qwen3-coder-30b-a3b-instruct
       --api-key token-abc123
       --gpu-memory-utilization 0.9
-      --tool-call-parser mistral
       --enable-auto-tool-choice
+      --tool-call-parser qwen3_coder
       --tensor-parallel-size 1
-      --max-model-len 30720
-
+      --max-model-len 65536
 
   prometheus:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"   # the default port used by Prometheus
     volumes:
-      - ${PWD}/prometheus.yaml:/etc/prometheus/prometheus.yml # mount Prometheus config file
+      - ./monitoring/prometheus.yaml:/etc/prometheus/prometheus.yml # mount Prometheus config file
 
   grafana:
     image: grafana/grafana:latest
@@ -36,3 +33,6 @@ services:
       - prometheus
     ports:
       - "3000:3000" # the default port used by Grafana
+    volumes:
+      - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources

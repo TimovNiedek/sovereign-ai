@@ -1,4 +1,3 @@
-# prometheus.yaml
 global:
   scrape_interval: 5s
   evaluation_interval: 30s
@@ -7,4 +6,4 @@ scrape_configs:
   - job_name: vllm
     static_configs:
       - targets:
-          - 'host.docker.internal:8000'
+          - 'vllm:8000'
