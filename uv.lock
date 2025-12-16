@@ -3199,22 +3199,22 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "requests" },
-    { name = "vllm" },
 ]
 
 [package.dev-dependencies]
+benchmark = [
+    { name = "vllm" },
+]
 dev = [
     { name = "pre-commit" },
     { name = "ruff" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "requests", specifier = ">=2.32.5" },
-    { name = "vllm", specifier = ">=0.12.0" },
-]
+requires-dist = [{ name = "requests", specifier = ">=2.32.5" }]
 
 [package.metadata.requires-dev]
+benchmark = [{ name = "vllm", specifier = ">=0.12.0" }]
 dev = [
     { name = "pre-commit", specifier = ">=4.5.0" },
     { name = "ruff", specifier = ">=0.14.9" },
