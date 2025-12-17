@@ -148,6 +148,8 @@ services:
       - remote
     ports:
       - "8080:8080"
+    networks:
+      - common_net
     volumes:
       - open-webui:/app/backend/data
     environment:
