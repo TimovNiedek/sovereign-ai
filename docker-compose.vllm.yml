@@ -4,7 +4,6 @@ services:
     build:
       context: ../vllm  # Assume vllm repo is cloned next to this one
       dockerfile: docker/Dockerfile.cpu
-      network: host
     profiles:
       - local
     environment:
@@ -19,34 +18,33 @@ services:
     shm_size: 4gb
     ipc: host
     command: >
-      Qwen/Qwen3-0.6B
-      --served-model-name Qwen/Qwen3-0.6B
+      Qwen/Qwen3-1.7B
       --dtype bfloat16
-      --enable-auto-tool-choice
-      --tool-call-parser qwen3_coder
       --tensor-parallel-size 1
       --max-model-len 32768
+
   # vllm-llama3:
-  #   image: vllm/vllm-openai:latest
+  #   build:
+  #     context: ../vllm  # Assume vllm repo is cloned next to this one
+  #     dockerfile: docker/Dockerfile.cpu
   #   profiles:
   #     - local
-  #   runtime: nvidia
   #   environment:
   #     - HF_TOKEN=${HF_TOKEN}
-  #     - NVIDIA_VISIBLE_DEVICES=allx
+  #     - VLLM_CPU_KVCACHE_SPACE=8
+  #     - VLLM_CPU_OMP_THREADS_BIND=0-7  # Adjust cores based on your CPU
   #   volumes:
   #     - ~/.cache/huggingface:/root/.cache/huggingface
   #   ports:
   #     - "8001:8001"
+  #   privileged: true
+  #   shm_size: 4gb
   #   ipc: host
   #   command: >
-  #     --model meta-llama/Llama-3.1-8B-Instruct
-  #     --served-model-name Llama-3.1-8B-Instruct
-  #     --gpu-memory-utilization 0.4
+  #     meta-llama/Llama-3.2-3B-Instruct
+  #     --dtype bfloat16
   #     --tensor-parallel-size 1
   #     --max-model-len 32768
-  #   networks:
-  #     - common_net
 
   vllm-coder:
     image: vllm/vllm-openai:latest
@@ -92,6 +90,24 @@ services:
       --max-model-len 32768
     networks:
       - common_net
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    profiles:
+      - local
+      - remote
+    restart: always
+    ports:
+      - "3001:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - OPENAI_API_BASE_URL=http://vllm-qwen3:8000/v1
+
+volumes:
+  open-webui:
+    driver: local
+
 networks:
   common_net:
     external: true
