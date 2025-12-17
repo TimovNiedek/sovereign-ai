@@ -56,7 +56,7 @@ services:
     image: vllm/vllm-openai:latest
     profiles:
       - remote
-    # restart: on-failure:2
+    restart: on-failure:2
     runtime: nvidia
     environment:
       - HF_TOKEN=${HF_TOKEN}
@@ -93,7 +93,7 @@ services:
         condition: service_healthy
     profiles:
       - remote
-    # restart: on-failure:2
+    restart: on-failure:2
     runtime: nvidia
     environment:
       - HF_TOKEN=${HF_TOKEN}
