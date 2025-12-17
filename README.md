@@ -4,7 +4,13 @@ This document outlines the setup for a self-hosted LLM using vLLM with Prometheu
 
 ## Prerequisites
 
-* Set the environment variable HF_TOKEN, or add it to a .env file.
+Environment variables supplied through .env file:
+
+```
+HF_TOKEN=...
+LITELLM_MASTER_KEY=...
+PROFILE=remote  # or local
+```
 
 ## Running with docker compose
 

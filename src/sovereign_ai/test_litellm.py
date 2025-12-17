@@ -3,8 +3,12 @@
 Test script to verify vLLM is working correctly with the API.
 """
 
+import os
 import requests
 from typing import Dict, Any
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 
 def test_litellm_api():
@@ -12,7 +16,8 @@ def test_litellm_api():
 
     # Configuration
     base_url = "http://localhost:4000/v1"
-    api_key = "sk-1234"
+    api_key = os.getenv("LITELLM_MASTER_KEY", "")
+    profile = os.getenv("PROFILE", "local")
 
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
 
