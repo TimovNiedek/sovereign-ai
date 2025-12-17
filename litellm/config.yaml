@@ -1,0 +1,9 @@
+model_list:
+  - model_name: vllm-qwen3
+    litellm_params:
+      model: hosted_vllm/Qwen/Qwen3-1.7B  # add hosted_vllm/ prefix to route as OpenAI provider
+      api_base: http://vllm-qwen3:8000/v1      # add api base for OpenAI compatible provider
+  - model_name: vllm-llama3
+    litellm_params:
+      model: hosted_vllm/meta-llama/Llama-3.2-3B-Instruct  # add hosted_vllm/ prefix to route as OpenAI provider
+      api_base: http://vllm-llama3:8001/v1      # add api base for OpenAI compatible provider
