@@ -10,8 +10,16 @@ This document outlines the setup for a self-hosted LLM using vLLM with Prometheu
 
 ```bash
 docker network create common_network
-docker compose -f docker-compose.vllm.yml up -d
-docker compose -f docker-compose.monitoring.yml up -d
+docker compose --profile remote -f docker-compose.yml up -d
+```
+
+## Local setup (MacOS)
+
+```
+brew install prometheus
+brew install grafana
+
+prometheus --config.file=monitoring/prometheus-local.yaml
 ```
 
 ## Architecture
@@ -19,7 +27,7 @@ docker compose -f docker-compose.monitoring.yml up -d
 The setup supports running components independently:
 
 - **vLLM**: Runs on `localhost:8000`
-- **Prometheus**: Runs on `localhost:9090` 
+- **Prometheus**: Runs on `localhost:9090`
 - **Grafana**: Runs on `localhost:3000`
 
 This separation allows you to manage vLLM without needing to restart the monitoring stack, or vice versa.
