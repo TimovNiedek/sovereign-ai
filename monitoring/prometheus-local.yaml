@@ -8,3 +8,7 @@ scrape_configs:
       - targets:
           - 'localhost:8000'
           - 'localhost:8001'
+  - job_name: litellm
+    static_configs:
+      - targets:
+          - 'localhost:4000'

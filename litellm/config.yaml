@@ -17,3 +17,8 @@ model_list:
     litellm_params:
       model: hosted_vllm/openai/gpt-oss-20b
       api_base: http://vllm-gpt-oss:8001/v1
+litellm_settings:
+  callbacks:
+    - prometheus
+  # https://docs.litellm.ai/docs/proxy/prometheus#initialize-budget-metrics-on-startup
+  prometheus_initialize_budget_metrics: true
