@@ -6,7 +6,7 @@ services:
       context: ../vllm  # Assume vllm repo is cloned next to this one
       dockerfile: docker/Dockerfile.cpu
     profiles:
-      - local
+      - development
     restart: on-failure:2
     environment:
       - HF_TOKEN=${HF_TOKEN}
@@ -32,7 +32,7 @@ services:
       context: ../vllm  # Assume vllm repo is cloned next to this one
       dockerfile: docker/Dockerfile.cpu
     profiles:
-      - local
+      - development
     restart: on-failure:2
     environment:
       - HF_TOKEN=${HF_TOKEN}
@@ -55,7 +55,7 @@ services:
   vllm-coder:
     image: vllm/vllm-openai:latest
     profiles:
-      - remote
+      - production
     restart: on-failure:2
     runtime: nvidia
     environment:
@@ -90,7 +90,7 @@ services:
       vllm-coder:
         condition: service_healthy
     profiles:
-      - remote
+      - production
     restart: on-failure:2
     runtime: nvidia
     environment:
@@ -135,18 +135,19 @@ services:
       retries: 3     # Retry up to 3 times if health check fails
       start_period: 40s  # Wait 40 seconds after container start before beginning health checks
 
+  # This is only run locally for interacting with the LLMs.
+  # In production, you would connect your own client to litellm's OpenAI compatible API.
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     profiles:
-      - local
-      - remote
+      - development
     ports:
       - "8080:8080"
     volumes:
       - open-webui:/app/backend/data
     environment:
       - OPENAI_API_BASE_URL=http://litellm:4000
-      - OPENAI_API_KEY=sk-1234
+      - OPENAI_API_KEY=${LITELLM_MASTER_KEY}
 
 volumes:
   open-webui:

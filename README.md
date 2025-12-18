@@ -9,14 +9,14 @@ Environment variables supplied through .env file:
 ```
 HF_TOKEN=...
 LITELLM_MASTER_KEY=...
-PROFILE=remote  # or local
+LITELLM_ENVIRONMENT=production  # or development
 ```
 
 ## Running with docker compose
 
 ```bash
 docker network create common_network
-docker compose --profile remote -f docker-compose.yml up -d
+docker compose --profile production -f docker-compose.yml up -d
 ```
 
 ## Local setup (MacOS)
@@ -29,7 +29,7 @@ brew install grafana
 
 prometheus --config.file=monitoring/prometheus-local.yaml
 
-docker compose --profile local -f docker-compose.yml up -d
+docker compose --profile development -f docker-compose.yml up -d
 ```
 
 ## Architecture
