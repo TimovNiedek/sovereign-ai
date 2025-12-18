@@ -7,8 +7,6 @@ services:
       - "9090:9090"
     volumes:
       - ./monitoring/prometheus.yaml:/etc/prometheus/prometheus.yml
-    networks:
-      - common_net
 
   grafana:
     image: grafana/grafana:latest
@@ -23,8 +21,3 @@ services:
       - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
       - common_net
-
-networks:
-  common_net:
-    external: true
-    name: common_network

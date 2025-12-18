@@ -8,3 +8,7 @@ scrape_configs:
       - targets:
           - 'vllm-coder:8000'
           - 'vllm-gpt-oss:8001'
+  - job_name: litellm
+    static_configs:
+      - targets:
+          - 'litellm:4000'

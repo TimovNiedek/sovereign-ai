@@ -73,8 +73,6 @@ services:
       --tool-call-parser qwen3_coder
       --tensor-parallel-size 1
       --max-model-len 16384
-    networks:
-      - common_net
     healthcheck:
       test:
         - CMD-SHELL
@@ -109,8 +107,6 @@ services:
       --tensor-parallel-size 1
       --max-model-len 16384
       --port 8001
-    networks:
-      - common_net
     healthcheck:
       test:
         - CMD-SHELL
@@ -130,8 +126,6 @@ services:
       - "4000:4000" # Map the container port to the host, change the host port if necessary
     env_file:
       - .env # Load local .env file
-    networks:
-      - common_net
     healthcheck:  # Defines the health check configuration for the container
       test:
         - CMD-SHELL
@@ -148,8 +142,6 @@ services:
       - remote
     ports:
       - "8080:8080"
-    networks:
-      - common_net
     volumes:
       - open-webui:/app/backend/data
     environment:
@@ -159,8 +151,3 @@ services:
 volumes:
   open-webui:
     driver: local
-
-networks:
-  common_net:
-    external: true
-    name: common_network
