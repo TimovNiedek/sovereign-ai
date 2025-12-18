@@ -44,6 +44,30 @@ This repository composes a small self-hosted LLM stack. Services, their purpose,
 - **prometheus**: Metrics server for scraping application metrics. Exposes port `9090`. Config: `monitoring/prometheus.yaml`.
 - **grafana**: Dashboarding service. Exposes port `3000` and is pre-provisioned with dashboards/datasources from `monitoring/grafana/provisioning/`.
 
+## Resource Allocation Strategy
+
+### CPU-Based Models (Development)
+
+CPU allocation is split equally across development models to maximize throughput:
+- **vllm-qwen3**: Cores 0-3 (4 cores), 4GB RAM for KV cache
+- **vllm-llama3**: Cores 4-7 (4 cores), 4GB RAM for KV cache
+
+This configuration assumes the host has **at least 8+ CPU cores**. Adjust `VLLM_CPU_OMP_THREADS_BIND` ranges and `VLLM_CPU_KVCACHE_SPACE` in `docker-compose.vllm.yml` if your system has fewer cores or less available RAM.
+
+### GPU-Based Models (Production)
+
+GPU memory allocation is constrained to prevent OOM errors:
+- **GPU utilization**: 45% per model (90% total)
+- **Max context length**: 16k tokens
+
+**Allocation rationale:**
+- Initial attempts with 65k context length using 90% GPU utilization resulted in vLLM out-of-memory errors
+- Reduced to 32k context length: still insufficient for concurrent model execution
+- Reduced to 16k context length: successfully supports parallel execution of both models with room for headroom
+- `vllm-gpt-oss` only starts once `vllm-coder` is healthy to avoid concurrent GPU memory claims spiking during model loading.
+
+See [benchmarks/README.md](benchmarks/README.md) for detailed benchmark results and performance metrics.
+
 Notes:
-- Services are split into `local` and `remote` profiles. When running locally, enable the `local` profile to avoid starting GPU/remote-only services. When running on a GPU host, use the `remote` profile for GPU-backed model containers.
+- Services are split into `development` and `production` profiles. When running locally, enable the `development` profile to avoid starting GPU/remote-only services. When running on a GPU host, use the `production` profile for GPU-backed model containers.
 - Some services may bind to the same host ports in different profiles (for example `8000` for CPU vs GPU vLLM). Ensure you run only the intended profile(s) concurrently or change host port mappings as needed.
