@@ -138,21 +138,3 @@ services:
       timeout: 10s   # Health check command times out after 10 seconds
       retries: 3     # Retry up to 3 times if health check fails
       start_period: 40s  # Wait 40 seconds after container start before beginning health checks
-
-  # This is only run locally for interacting with the LLMs.
-  # In production, you would connect your own client to litellm's OpenAI compatible API.
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    profiles:
-      - development
-    ports:
-      - "8080:8080"
-    volumes:
-      - open-webui:/app/backend/data
-    environment:
-      - OPENAI_API_BASE_URL=http://litellm:4000
-      - OPENAI_API_KEY=${LITELLM_MASTER_KEY}
-
-volumes:
-  open-webui:
-    driver: local

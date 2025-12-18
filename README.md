@@ -7,9 +7,18 @@ This document outlines the setup for a self-hosted LLM using vLLM with Prometheu
 Environment variables supplied through .env file:
 
 ```
+# Your token from huggingface hub for downloading models with vllm
 HF_TOKEN=...
+
+# Can be any key starting with `sk-...`, e.g. sk-1234
 LITELLM_MASTER_KEY=...
-LITELLM_ENVIRONMENT=production  # or development
+
+# or development for only running cpu-models
+LITELLM_ENVIRONMENT=production
+
+# Only needed when connecting Open WebUI to the remote litellm
+# If not specified, will attempt to connect to litellm within the docker compose network, suitable for development
+LITELLM_URL=http://host.docker.internal:4000
 ```
 
 ## Running with docker compose
