@@ -1,22 +1,30 @@
 model_list:
-  # CPU vLLM models, loaded in "local" profile
+  # CPU vLLM models, loaded in "development" profile
   - model_name: vllm-qwen3
     litellm_params:
       model: hosted_vllm/Qwen/Qwen3-1.7B  # add hosted_vllm/ prefix to route as OpenAI provider
       api_base: http://vllm-qwen3:8000/v1      # add api base for OpenAI compatible provider
+    model_info:
+     supported_environments: ["development"]
   - model_name: vllm-llama3
     litellm_params:
       model: hosted_vllm/meta-llama/Llama-3.2-3B-Instruct
       api_base: http://vllm-llama3:8001/v1
-  # GPU vLLM models, loaded in "remote" profile
+    model_info:
+     supported_environments: ["development"]
+  # GPU vLLM models, loaded in "production" profile
   - model_name: vllm-qwen3-coder-30B-A3B-Instruct
     litellm_params:
       model: hosted_vllm/stelterlab/Qwen3-Coder-30B-A3B-Instruct-AWQ
       api_base: http://vllm-coder:8000/v1
+    model_info:
+     supported_environments: ["production"]
   - model_name: vllm-gpt-oss-20b
     litellm_params:
       model: hosted_vllm/openai/gpt-oss-20b
       api_base: http://vllm-gpt-oss:8001/v1
+    model_info:
+     supported_environments: ["production"]
 litellm_settings:
   callbacks:
     - prometheus
