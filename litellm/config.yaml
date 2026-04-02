@@ -13,9 +13,15 @@ model_list:
     model_info:
      supported_environments: ["development"]
   # GPU vLLM models, loaded in "production" profile
-  - model_name: vllm-qwen3-coder-30B-A3B-Instruct
+  # - model_name: vllm-qwen3-coder-30B-A3B-Instruct
+  #   litellm_params:
+  #     model: hosted_vllm/stelterlab/Qwen3-Coder-30B-A3B-Instruct-AWQ
+  #     api_base: http://vllm-coder:8000/v1
+  #   model_info:
+  #    supported_environments: ["production"]
+  - model_name: Devstral-Small-2-24B-Instruct-2512-AWQ-4bit
     litellm_params:
-      model: hosted_vllm/stelterlab/Qwen3-Coder-30B-A3B-Instruct-AWQ
+      model: hosted_vllm/cyankiwi/Devstral-Small-2-24B-Instruct-2512-AWQ-4bit
       api_base: http://vllm-coder:8000/v1
     model_info:
      supported_environments: ["production"]

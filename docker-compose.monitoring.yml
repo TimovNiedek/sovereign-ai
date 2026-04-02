@@ -2,7 +2,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     profiles:
-      - remote
+      - production
     ports:
       - "9090:9090"
     volumes:
@@ -11,7 +11,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     profiles:
-      - remote
+      - production
     depends_on:
       - prometheus
     ports:
